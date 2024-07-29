@@ -69,7 +69,7 @@ void BatteryManager::checkDevices() {
 		batteriesAreFull = true;
 		for (uint32_t i = 0; i < batteriesCount; i++) {
 			if (batteriesConnection[i]) {
-				auto poll = atomic_load_explicit(&quickPoll, memory_order_acquire);
+				//auto poll = atomic_load_explicit(&quickPoll, memory_order_acquire);
 				batteriesAreFull = batteriesAreFull && batteries[i].updateRealTimeStatus(poll > 0);
 			}
 			if (!adapterCount && !externalPowerConnected)
@@ -250,14 +250,14 @@ bool BatteryManager::probe() {
 			return false;
 		}
 		
-#if __MAC_OS_X_VERSION_MIN_REQUIRED < __MAC_10_6
+if __MAC_OS_X_VERSION_MIN_REQUIRED < __MAC_10_6
 		auto acpi = IOService::waitForService(dict);
 		if (acpi)
 			acpi->retain();
-#else
+else
 		auto acpi = IOService::waitForMatchingService(dict);
 		dict->release();
-#endif
+endif
 
 		if (!acpi) {
 			SYSLOG("bmgr", "failed to wait for acpi");
