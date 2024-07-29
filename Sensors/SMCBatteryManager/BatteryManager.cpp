@@ -69,7 +69,7 @@ void BatteryManager::checkDevices() {
 		batteriesAreFull = true;
 		for (uint32_t i = 0; i < batteriesCount; i++) {
 			if (batteriesConnection[i]) {
-				//auto poll = atomic_load_explicit(&quickPoll, memory_order_acquire);
+				auto poll = atomic_load_explicit(&quickPoll, memory_order_acquire);
 				batteriesAreFull = batteriesAreFull && batteries[i].updateRealTimeStatus(poll > 0);
 			}
 			if (!adapterCount && !externalPowerConnected)
@@ -385,4 +385,3 @@ void BatteryManager::createShared() {
 	atomic_init(&instance->handlerTarget, nullptr);
 	atomic_init(&instance->handler, nullptr);
 }
-
